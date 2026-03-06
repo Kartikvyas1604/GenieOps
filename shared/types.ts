@@ -51,7 +51,7 @@ export enum ServiceType {
     NETLIFY = 'netlify',
     RENDER = 'render',
     FLY_IO = 'fly-io',
-    
+
     // DevOps Tools
     DOCKER = 'docker',
     KUBERNETES = 'kubernetes',
@@ -63,20 +63,20 @@ export enum ServiceType {
     PULUMI = 'pulumi',
     ARGOCD = 'argocd',
     FLUX = 'flux',
-    
+
     // Project Management
     JIRA = 'jira',
     LINEAR = 'linear',
     TRELLO = 'trello',
     ASANA = 'asana',
     NOTION = 'notion',
-    
+
     // Communication
     SLACK = 'slack',
     TEAMS = 'teams',
     DISCORD = 'discord',
     PAGERDUTY = 'pagerduty',
-    
+
     // Authentication
     AUTH0 = 'auth0',
     FIREBASE_AUTH = 'firebase-auth',
@@ -84,7 +84,7 @@ export enum ServiceType {
     CLERK = 'clerk',
     COGNITO = 'cognito',
     NEXTAUTH = 'nextauth',
-    
+
     // OAuth Providers
     GOOGLE_OAUTH = 'google-oauth',
     GITHUB_OAUTH = 'github-oauth',
@@ -94,7 +94,7 @@ export enum ServiceType {
     LINKEDIN_OAUTH = 'linkedin-oauth',
     MICROSOFT_OAUTH = 'microsoft-oauth',
     DISCORD_OAUTH = 'discord-oauth',
-    
+
     // Payments & APIs
     STRIPE = 'stripe',
     PAYPAL = 'paypal',
@@ -102,7 +102,7 @@ export enum ServiceType {
     SENDGRID = 'sendgrid',
     RESEND = 'resend',
     POSTMARK = 'postmark',
-    
+
     // Databases
     POSTGRESQL = 'postgresql',
     MYSQL = 'mysql',
@@ -348,29 +348,29 @@ export enum ResourceType {
     LAMBDA_FUNCTION = 'lambda-function',
     ECS_SERVICE = 'ecs-service',
     EKS_CLUSTER = 'eks-cluster',
-    
+
     // GCP
     CLOUD_RUN_SERVICE = 'cloud-run-service',
     GKE_CLUSTER = 'gke-cluster',
     CLOUD_SQL_INSTANCE = 'cloud-sql-instance',
     GCS_BUCKET = 'gcs-bucket',
-    
+
     // Azure
     APP_SERVICE = 'app-service',
     AKS_CLUSTER = 'aks-cluster',
     COSMOS_DB = 'cosmos-db',
-    
+
     // Kubernetes
     K8S_DEPLOYMENT = 'k8s-deployment',
     K8S_SERVICE = 'k8s-service',
     K8S_INGRESS = 'k8s-ingress',
     K8S_POD = 'k8s-pod',
-    
+
     // CI/CD
     GITHUB_ACTION = 'github-action',
     GITLAB_PIPELINE = 'gitlab-pipeline',
     JENKINS_JOB = 'jenkins-job',
-    
+
     // Other
     DOCKER_IMAGE = 'docker-image',
     HELM_CHART = 'helm-chart',

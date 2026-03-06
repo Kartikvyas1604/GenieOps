@@ -127,8 +127,7 @@
       {
         "command": "omniops.syncSecrets",
         "title": "Sync Secrets to Vault",
-        "category": "OmniOps"
-,
+        "category": "OmniOps",
         "icon": "$(key)"
       },
       {

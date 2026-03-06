@@ -1,5 +1,14 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as fs from 'fs/promises';
+import {
+    ProjectContext,
+    ProjectFramework,
+    PackageManager,
+    RuntimeEnvironment,
+    ServiceType
+} from '../../shared/types';
+import * as path from 'path';
 import * as fs from 'fs';
 
 /**
@@ -24,7 +33,7 @@ export interface ProjectAnalysis {
  * Used for auto-context awareness and intelligent suggestions
  */
 export class ProjectAnalyzer {
-    
+
     /**
      * Analyze a project directory
      * @param projectPath - Path to the project root
@@ -48,28 +57,28 @@ export class ProjectAnalyzer {
         try {
             // Check for various project files
             const files = await this.listFiles(projectPath);
-            
+
             // Detect language and framework
             await this.detectLanguageAndFramework(projectPath, files, analysis);
-            
+
             // Check for Docker
             analysis.hasDocker = files.includes('Dockerfile') || files.includes('docker-compose.yml');
-            
+
             // Check for CI/CD
             analysis.hasCICD = this.detectCICD(files);
-            
+
             // Check for tests
             analysis.hasTests = this.detectTests(files);
-            
+
             // Parse package.json if exists
             await this.parsePackageJson(projectPath, analysis);
-            
+
             // Detect services from code
             await this.detectServices(projectPath, analysis);
-            
+
             // Generate suggestions
             this.generateSuggestions(analysis);
-            
+
         } catch (error) {
             console.error('Project analysis error:', error);
         }
@@ -82,13 +91,13 @@ export class ProjectAnalyzer {
      */
     private async listFiles(projectPath: string): Promise<string[]> {
         const files: string[] = [];
-        
+
         try {
             const entries = await fs.promises.readdir(projectPath, { withFileTypes: true });
-            
+
             for (const entry of entries) {
                 files.push(entry.name);
-                
+
                 // Check common directories
                 if (entry.isDirectory() && ['.github', '.gitlab', '.circleci', 'test', 'tests', '__tests__', 'src'].includes(entry.name)) {
                     const subPath = path.join(projectPath, entry.name);
@@ -107,19 +116,19 @@ export class ProjectAnalyzer {
      * Detect the programming language and framework
      */
     private async detectLanguageAndFramework(
-        projectPath: string, 
-        files: string[], 
+        projectPath: string,
+        files: string[],
         analysis: ProjectAnalysis
     ): Promise<void> {
         // Node.js / JavaScript / TypeScript
         if (files.includes('package.json')) {
-            analysis.language = files.some(f => f.endsWith('.ts') || f.includes('tsconfig')) 
-                ? 'TypeScript' 
+            analysis.language = files.some(f => f.endsWith('.ts') || f.includes('tsconfig'))
+                ? 'TypeScript'
                 : 'JavaScript';
-            analysis.packageManager = files.includes('yarn.lock') 
-                ? 'yarn' 
-                : files.includes('pnpm-lock.yaml') 
-                    ? 'pnpm' 
+            analysis.packageManager = files.includes('yarn.lock')
+                ? 'yarn'
+                : files.includes('pnpm-lock.yaml')
+                    ? 'pnpm'
                     : 'npm';
 
             // Detect framework from package.json
@@ -284,7 +293,7 @@ export class ProjectAnalyzer {
         try {
             const envExamplePath = path.join(projectPath, '.env.example');
             const envContent = await fs.promises.readFile(envExamplePath, 'utf-8');
-            
+
             if (envContent.includes('AWS')) { services.add('AWS'); }
             if (envContent.includes('STRIPE')) { services.add('Stripe'); }
             if (envContent.includes('DATABASE') || envContent.includes('POSTGRES') || envContent.includes('MYSQL')) {
@@ -333,7 +342,7 @@ export class ProjectAnalyzer {
      */
     async getProjectContext(projectPath: string): Promise<string> {
         const analysis = await this.analyze(projectPath);
-        
+
         let context = `Project Analysis:\n`;
         context += `- Language: ${analysis.language || 'Unknown'}\n`;
         context += `- Framework: ${analysis.framework || 'None detected'}\n`;
@@ -341,11 +350,11 @@ export class ProjectAnalyzer {
         context += `- Has Docker: ${analysis.hasDocker ? 'Yes' : 'No'}\n`;
         context += `- Has CI/CD: ${analysis.hasCICD ? 'Yes' : 'No'}\n`;
         context += `- Has Tests: ${analysis.hasTests ? 'Yes' : 'No'}\n`;
-        
+
         if (analysis.detectedServices.length > 0) {
             context += `- Detected Services: ${analysis.detectedServices.join(', ')}\n`;
         }
-        
+
         if (analysis.dependencies.length > 0) {
             context += `- Key Dependencies: ${analysis.dependencies.slice(0, 10).join(', ')}\n`;
         }
