@@ -28,14 +28,14 @@ export class OAuthWebViewHandler {
         const state = this.generateState();
         const codeVerifier = this.generateCodeVerifier();
         const codeChallenge = await this.generateCodeChallenge(codeVerifier);
-        
+
         // Generate authorization URL
         const authUrl = this.buildAuthorizationUrl(config, state, codeChallenge);
-        
+
         // Create promise for token exchange
         const tokenPromise = new Promise<OAuthTokens>((resolve, reject) => {
             this.pendingAuth.set(state, { resolve, reject });
-            
+
             // Timeout after 5 minutes
             setTimeout(() => {
                 if (this.pendingAuth.has(state)) {
@@ -44,10 +44,10 @@ export class OAuthWebViewHandler {
                 }
             }, 5 * 60 * 1000);
         });
-        
+
         // Open OAuth WebView
         await this.openOAuthWebView(config.service, authUrl, state, codeVerifier, config);
-        
+
         return tokenPromise;
     }
 
@@ -56,7 +56,7 @@ export class OAuthWebViewHandler {
      */
     async startDeviceCodeFlow(config: OAuthConfig, deviceCodeFn: () => Promise<{ deviceCode: string; userCode: string; verificationUrl: string }>): Promise<OAuthTokens> {
         const { deviceCode, userCode, verificationUrl } = await deviceCodeFn();
-        
+
         // Show device code in WebView
         const panel = vscode.window.createWebviewPanel(
             'omniops-device-auth',
@@ -67,9 +67,9 @@ export class OAuthWebViewHandler {
                 retainContextWhenHidden: true
             }
         );
-        
+
         panel.webview.html = this.getDeviceCodeHtml(config.service, userCode, verificationUrl);
-        
+
         // Poll for token while panel is open
         return new Promise<OAuthTokens>((resolve, reject) => {
             const pollInterval = setInterval(async () => {
@@ -82,7 +82,7 @@ export class OAuthWebViewHandler {
                     // Continue polling
                 }
             }, 5000);
-            
+
             panel.onDidDispose(() => {
                 clearInterval(pollInterval);
                 reject(new Error('Authentication cancelled by user'));
@@ -106,11 +106,11 @@ export class OAuthWebViewHandler {
                 return null;
             }
         });
-        
+
         if (!apiKey) {
             throw new Error('API key input cancelled');
         }
-        
+
         return apiKey.trim();
     }
 
@@ -133,14 +133,14 @@ export class OAuthWebViewHandler {
                 retainContextWhenHidden: true
             }
         );
-        
+
         panel.webview.html = this.getOAuthWebViewHtml(service, authUrl);
-        
+
         // Listen for messages from webview (auth callback)
         panel.webview.onDidReceiveMessage(async (message) => {
             if (message.type === 'auth-callback') {
                 const { code, returnedState } = message;
-                
+
                 // Verify state
                 if (returnedState !== state) {
                     const pending = this.pendingAuth.get(state);
@@ -151,7 +151,7 @@ export class OAuthWebViewHandler {
                     panel.dispose();
                     return;
                 }
-                
+
                 // Exchange code for tokens
                 try {
                     const tokens = await this.exchangeCodeForTokens(code, codeVerifier, config);
@@ -180,7 +180,7 @@ export class OAuthWebViewHandler {
                 panel.dispose();
             }
         });
-        
+
         // Handle panel disposal (user cancelled)
         panel.onDidDispose(() => {
             const pending = this.pendingAuth.get(state);
@@ -204,7 +204,7 @@ export class OAuthWebViewHandler {
             code_challenge: codeChallenge,
             code_challenge_method: 'S256'
         });
-        
+
         return `${config.authUrl}?${params.toString()}`;
     }
 
@@ -219,11 +219,11 @@ export class OAuthWebViewHandler {
             client_id: config.clientId || '',
             code_verifier: codeVerifier
         });
-        
+
         if (config.clientSecret) {
             params.append('client_secret', config.clientSecret);
         }
-        
+
         const response = await fetch(config.tokenUrl, {
             method: 'POST',
             headers: {
@@ -231,14 +231,14 @@ export class OAuthWebViewHandler {
             },
             body: params.toString()
         });
-        
+
         if (!response.ok) {
             const error = await response.text();
             throw new Error(`Token exchange failed: ${error}`);
         }
-        
+
         const data = await response.json();
-        
+
         return {
             accessToken: data.access_token,
             refreshToken: data.refresh_token,
