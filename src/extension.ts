@@ -25,13 +25,13 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         oauthWebView = new OAuthWebView(context);
         projectScanner = new ProjectScanner();
         projectAnalyzer = new ProjectAnalyzer();
-        
+
         // Initialize tree view providers
         const connectionsProvider = new ConnectionsTreeProvider(credentialManager);
         const resourcesProvider = new ResourcesTreeProvider();
         const pipelinesProvider = new PipelinesTreeProvider();
         const historyProvider = new HistoryTreeProvider();
-        
+
         // Register tree views
         context.subscriptions.push(
             vscode.window.registerTreeDataProvider('genieops.connectionsView', connectionsProvider),
@@ -39,14 +39,14 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             vscode.window.registerTreeDataProvider('genieops.pipelinesView', pipelinesProvider),
             vscode.window.registerTreeDataProvider('genieops.historyView', historyProvider)
         );
-        
+
         // Register chat command
         context.subscriptions.push(
             vscode.commands.registerCommand('genieops.openChat', () => {
                 chatPanel = ChatPanel.createOrShow(context.extensionUri, credentialManager, projectScanner);
             })
         );
-        
+
         // Register main command
         context.subscriptions.push(
             vscode.commands.registerCommand('genieops.runCommand', async () => {
@@ -55,14 +55,14 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
                     prompt: 'What do you want to do? (Type ONE sentence)',
                     ignoreFocusOut: true
                 });
-                
+
                 if (input) {
                     chatPanel = ChatPanel.createOrShow(context.extensionUri, credentialManager, projectScanner);
                     chatPanel.sendMessage(input);
                 }
             })
         );
-        
+
         // Refresh tree views commands
         context.subscriptions.push(
             vscode.commands.registerCommand('genieops.refreshConnections', () => {

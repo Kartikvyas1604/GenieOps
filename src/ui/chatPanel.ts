@@ -3,8 +3,8 @@
  */
 
 import * as vscode from 'vscode';
-import { CredentialManager } from '../../auth/CredentialManager';
-import { ProjectScanner } from '../../scanner/ProjectScanner';
+import { CredentialManager } from '../auth/CredentialManager';
+import { ProjectScanner } from '../scanner/ProjectScanner';
 
 export class ChatPanel {
     public static currentPanel: ChatPanel | undefined;
@@ -117,7 +117,7 @@ export class ChatPanel {
 
         try {
             const analysis = await this.projectScanner.scanProject(workspaceFolder.uri.fsPath);
-            
+
             this._panel.webview.postMessage({
                 type: 'projectAnalysis',
                 data: {

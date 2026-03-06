@@ -13,13 +13,13 @@ export class ConnectionTreeItem extends vscode.TreeItem {
         public readonly collapsibleState: vscode.TreeItemCollapsibleState
     ) {
         super(serviceName, collapsibleState);
-        
+
         this.tooltip = `${serviceName} - ${status}`;
         this.description = status;
-        
+
         // Set icon based on service and status
         this.iconPath = this.getIcon();
-        
+
         // Set context value for menu visibility
         this.contextValue = status === 'connected' ? 'connectedService' : 'disconnectedService';
     }
@@ -55,7 +55,7 @@ export class ConnectionsTreeProvider implements vscode.TreeDataProvider<Connecti
     private _onDidChangeTreeData = new vscode.EventEmitter<ConnectionTreeItem | undefined | null | void>();
     readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
-    constructor(private credentialManager: CredentialManager) {}
+    constructor(private credentialManager: CredentialManager) { }
 
     /**
      * Refresh the tree view
@@ -81,7 +81,7 @@ export class ConnectionsTreeProvider implements vscode.TreeDataProvider<Connecti
 
         // Get all connected services
         const services = await this.credentialManager.listConnectedServices();
-        return services.map(service => 
+        return services.map(service =>
             new ConnectionTreeItem(
                 service.type,
                 service.displayName,
