@@ -15,8 +15,14 @@
   "categories": [
     "Other",
     "Machine Learning",
-    "Programming Languages"
+    "Programming Languages",
+    "Azure",
+    "Snippets"
   ],
+  "galleryBanner": {
+    "color": "#8B5CF6",
+    "theme": "dark"
+  },
   "keywords": [
     "devops",
     "aws",
@@ -141,7 +147,15 @@
     "viewsWelcome": [
       {
         "view": "genieops.connectionsView",
-        "contents": "No services connected yet.\n[Connect Service](command:genieops.connectService)"
+        "contents": "🧞 Welcome to GenieOps!\n\nGet started by configuring your Gemini API key:\n[Open Settings](command:workbench.action.openSettings?%5B%22genieops.googleApiKey%22%5D)\n\nThen connect your DevOps services:\n[Connect Service](command:genieops.connectService)\n\n[Open Chat Panel](command:genieops.openChat)"
+      },
+      {
+        "view": "genieops.pipelinesView",
+        "contents": "No pipelines configured yet.\n\nGenerate a CI/CD pipeline:\n[Generate CI/CD](command:genieops.generateCICD)"
+      },
+      {
+        "view": "genieops.resourcesView",
+        "contents": "No cloud resources found.\n\nConnect a cloud provider first:\n[Connect AWS/Azure/GCP](command:genieops.connectService)"
       }
     ],
     "menus": {

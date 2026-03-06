@@ -327,105 +327,265 @@ export class ChatPanel {
         .model-badge {
             display: inline-block;
             padding: 2px 8px;
-            background: var(--vscode-badge-background);
-            color: var(--vscode-badge-foreground);
-            border-radius: 4px;
-            font-size: 11px;
-            margin-left: 8px;
-        }
-        .input-container {
-            padding: 16px;
-            background: var(--vscode-editor-background);
-            border-top: 1px solid var(--vscode-panel-border);
-            display: flex;
-            gap: 8px;
-        }
-        .input-box {
-            flex: 1;
-            padding: 12px;
-            background: var(--vscode-input-background);
-            color: var(--vscode-input-foreground);
-            border: 1px solid var(--vscode-input-border);
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 14px;
-        }
-        .input-box:focus {
-            outline: none;
-            border-color: var(--vscode-focusBorder);
-        }
-        .send-button {
-            padding: 12px 24px;
-            background: var(--vscode-button-background);
-            color: var(--vscode-button-foreground);
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            font-size: 10px;
             font-weight: 600;
-        }
-        .send-button:hover {
-            background: var(--vscode-button-hoverBackground);
-        }
-        .send-button:active {
-            transform: scale(0.98);
+            text-transform: uppercase;
         }
         .quick-actions {
             padding: 8px 16px;
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
             border-bottom: 1px solid var(--vscode-panel-border);
+            background: var(--vscode-sideBar-background);
         }
         .quick-action {
             padding: 6px 12px;
             background: var(--vscode-button-secondaryBackground);
             color: var(--vscode-button-secondaryForeground);
-            border: none;
-            border-radius: 4px;
+            border: 1px solid var(--vscode-button-border);
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         .quick-action:hover {
             background: var(--vscode-button-secondaryHoverBackground);
+            transform: translateY(-1px);
+        }
+        .input-container {
+            padding: 16px;
+            background: var(--vscode-sideBar-background);
+            border-top: 1px solid var(--vscode-panel-border);
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+        .input-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--vscode-input-background);
+            color: var(--vscode-input-foreground);
+            border: 1px solid var(--vscode-input-border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            resize: none;
+            min-height: 40px;
+            max-height: 120px;
+        }
+        .input-box:focus {
+            outline: none;
+            border-color: var(--vscode-focusBorder);
+            box-shadow: 0 0 0 1px var(--vscode-focusBorder);
+        }
+        .input-hint {
+            font-size: 10px;
+            opacity: 0.5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .send-button {
+            padding: 10px 20px;
+            background: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .send-button:hover {
+            background: var(--vscode-button-hoverBackground);
+            transform: translateY(-1px);
+        }
+        .send-button:active {
+            transform: scale(0.98);
+        }
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .code-block {
+            background: var(--vscode-textBlockQuote-background);
+            border: 1px solid var(--vscode-textBlockQuote-border);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 8px 0;
+            font-family: var(--vscode-editor-font-family);
+            font-size: 12px;
+            overflow-x: auto;
+        }
+        .suggestions {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .suggestion {
+            padding: 8px 12px;
+            background: var(--vscode-list-hoverBackground);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.15s;
+        }
+        .suggestion:hover {
+            background: var(--vscode-list-activeSelectionBackground);
+            transform: translateX(4px);
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h2>🧞 GenieOps Assistant</h2>
-        <p style="font-size: 12px; opacity: 0.8; margin-top: 4px;">Powered by Gemini AI</p>
+        <div class="header-left">
+            <h2>🧞 GenieOps</h2>
+            <span class="mode-badge" id="modeBadge">Agent Mode</span>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <div class="control-group">
+            <span class="control-label">Model</span>
+            <select id="modelSelect" onchange="handleModelChange()">
+                <option value="gemini-pro" selected>Gemini Pro (Primary)</option>
+                <option value="gemini-flash">Gemini Flash (Fast)</option>
+                <option value="claude-3.5">Claude 3.5 Sonnet</option>
+                <option value="gpt-4">GPT-4 Turbo</option>
+                <option value="perplexity">Perplexity (Search)</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <span class="control-label">Mode</span>
+            <select id="agentMode" onchange="handleModeChange()">
+                <option value="agent" selected>🤖 Agent (Auto-execute)</option>
+                <option value="assistant">💬 Assistant (Suggest only)</option>
+                <option value="code">💻 Code Generation</option>
+                <option value="devops">⚙️ DevOps Tasks</option>
+            </select>
+        </div>
     </div>
     
     <div class="quick-actions">
-        <button class="quick-action" onclick="sendQuickMessage('Analyze my project')">🔍 Analyze Project</button>
-        <button class="quick-action" onclick="sendQuickMessage('Deploy to Vercel')">🚀 Deploy to Vercel</button>
-        <button class="quick-action" onclick="sendQuickMessage('Create Dockerfile')">🐳 Create Dockerfile</button>
-        <button class="quick-action" onclick="sendQuickMessage('Setup GitHub Actions')">⚙️ Setup CI/CD</button>
+        <button class="quick-action" onclick="sendQuickMessage('Analyze my project structure and dependencies')">
+            <span>🔍</span> Analyze Project
+        </button>
+        <button class="quick-action" onclick="sendQuickMessage('Deploy this application to Vercel')">
+            <span>🚀</span> Deploy to Vercel
+        </button>
+        <button class="quick-action" onclick="sendQuickMessage('Create an optimized Dockerfile for this project')">
+            <span>🐳</span> Generate Dockerfile
+        </button>
+        <button class="quick-action" onclick="sendQuickMessage('Setup GitHub Actions CI/CD pipeline')">
+            <span>⚙️</span> Setup CI/CD
+        </button>
+        <button class="quick-action" onclick="sendQuickMessage('Connect to AWS and list my resources')">
+            <span>☁️</span> Connect AWS
+        </button>
     </div>
     
     <div class="chat-container" id="chatContainer">
-        <div class="message ai">
-            👋 Hi! I'm GenieOps, your AI DevOps assistant. Tell me what you want to do, and I'll handle everything automatically.
-            <br><br>
-            Try: "Deploy my Next.js app to Vercel" or "Create a Dockerfile for this project"
+        <div class="message-group">
+            <div class="avatar ai">🧞</div>
+            <div class="message-content">
+                <div class="message-header">
+                    <span class="sender-name">GenieOps Agent</span>
+                    <span class="timestamp">${new Date().toLocaleTimeString()}</span>
+                </div>
+                <div class="message ai">
+                    👋 <strong>Welcome to GenieOps!</strong><br><br>
+                    I'm your AI DevOps assistant powered by <span class="model-badge">Gemini Pro</span>.<br><br>
+                    <strong>I can help you:</strong><br>
+                    • Deploy applications to any cloud platform<br>
+                    • Generate Dockerfiles and Kubernetes manifests<br>
+                    • Setup CI/CD pipelines<br>
+                    • Connect and manage cloud resources<br>
+                    • Execute DevOps tasks automatically<br><br>
+                    Try a quick action above or type what you want to do!
+                </div>
+            </div>
         </div>
     </div>
     
     <div class="input-container">
-        <input 
-            type="text" 
-            class="input-box" 
-            id="messageInput" 
-            placeholder="What do you want to do? (Type ONE sentence)"
-            onkeypress="handleKeyPress(event)"
-        />
-        <button class="send-button" onclick="sendMessage()">Send</button>
+        <div class="input-wrapper">
+            <textarea
+                class="input-box" 
+                id="messageInput" 
+                placeholder="Type your request... (Shift+Enter for new line, Enter to send)"
+                onkeydown="handleKeyPress(event)"
+                rows="1"
+            ></textarea>
+            <div class="input-hint">
+                <span>💡 Tip: Be specific about what you want to achieve</span>
+            </div>
+        </div>
+        <button class="send-button" onclick="sendMessage()" id="sendButton">
+            <span>▲</span> Send
+        </button>
     </div>
     
     <script>
         const vscode = acquireVsCodeApi();
         const chatContainer = document.getElementById('chatContainer');
         const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const modelSelect = document.getElementById('modelSelect');
+        const agentMode = document.getElementById('agentMode');
+        const modeBadge = document.getElementById('modeBadge');
+        
+        let currentModel = 'gemini-pro';
+        let currentMode = 'agent';
+        
+        // Auto-resize textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+        
+        function handleModelChange() {
+            currentModel = modelSelect.value;
+            addSystemMessage(\`Switched to \${modelSelect.options[modelSelect.selectedIndex].text}\`);
+        }
+        
+        function handleModeChange() {
+            currentMode = agentMode.value;
+            const modeText = agentMode.options[agentMode.selectedIndex].text;
+            modeBadge.textContent = modeText.split(' ')[1] || modeText;
+            addSystemMessage(\`Mode changed to \${modeText}\`);
+        }
+        
+        function addSystemMessage(text) {
+            const messageGroup = document.createElement('div');
+            messageGroup.className = 'message-group';
+            messageGroup.innerHTML = \`
+                <div class="avatar" style="background: var(--vscode-badge-background);">ℹ️</div>
+                <div class="message-content">
+                    <div class="message" style="background: var(--vscode-badge-background); font-size: 11px; padding: 8px 12px;">
+                        \${text}
+                    </div>
+                </div>
+            \`;
+            chatContainer.appendChild(messageGroup);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
         
         function sendMessage() {
             const text = messageInput.value.trim();
@@ -434,14 +594,18 @@ export class ChatPanel {
             // Add user message to chat
             addMessage(text, 'user');
             
-            // Send to extension
+            // Send to extension with model and mode
             vscode.postMessage({
                 type: 'sendMessage',
-                text: text
+                text: text,
+                model: currentModel,
+                mode: currentMode
             });
             
             // Clear input
             messageInput.value = '';
+            messageInput.style.height = 'auto';
+            messageInput.focus();
         }
         
         function sendQuickMessage(text) {
@@ -450,17 +614,76 @@ export class ChatPanel {
         }
         
         function handleKeyPress(event) {
-            if (event.key === 'Enter') {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
                 sendMessage();
             }
         }
         
-        function addMessage(text, type) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message ' + type;
-            messageDiv.textContent = text;
-            chatContainer.appendChild(messageDiv);
+        function addMessage(text, type, model, suggestions) {
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const messageGroup = document.createElement('div');
+            messageGroup.className = \`message-group \${type}\`;
+            
+            const avatar = type === 'user' 
+                ? '<div class="avatar">👤</div>' 
+                : '<div class="avatar ai">🧞</div>';
+            
+            const sender = type === 'user' ? 'You' : 'GenieOps Agent';
+            const modelBadge = model ? \`<span class="model-badge">\${model}</span>\` : '';
+            
+            let suggestionsHtml = '';
+            if (suggestions && suggestions.length > 0) {
+                suggestionsHtml = '<div class="suggestions">';
+                suggestions.forEach(s => {
+                    suggestionsHtml += \`<div class="suggestion" onclick="sendQuickMessage('\${s}')">\${s}</div>\`;
+                });
+                suggestionsHtml += '</div>';
+            }
+            
+            messageGroup.innerHTML = \`
+                \${avatar}
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="sender-name">\${sender}</span>
+                        <span class="timestamp">\${time}</span>
+                        \${modelBadge}
+                    </div>
+                    <div class="message \${type}">
+                        \${text.replace(/\\n/g, '<br>')}
+                    </div>
+                    \${suggestionsHtml}
+                </div>
+            \`;
+            
+            chatContainer.appendChild(messageGroup);
             chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function showThinking() {
+            const thinkingGroup = document.createElement('div');
+            thinkingGroup.className = 'message-group';
+            thinkingGroup.id = 'thinking';
+            thinkingGroup.innerHTML = \`
+                <div class="avatar ai">🧞</div>
+                <div class="message-content">
+                    <div class="message thinking">
+                        <div class="typing-indicator">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span>Thinking...</span>
+                    </div>
+                </div>
+            \`;
+            chatContainer.appendChild(thinkingGroup);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function removeThinking() {
+            const thinking = document.getElementById('thinking');
+            if (thinking) {
+                thinking.remove();
+            }
         }
         
         // Handle messages from extension
@@ -473,41 +696,36 @@ export class ChatPanel {
                     break;
                     
                 case 'aiThinking':
-                    addMessage(message.text, 'thinking');
+                    showThinking();
                     break;
                     
                 case 'aiResponse':
-                    const aiMsg = document.createElement('div');
-                    aiMsg.className = 'message ai';
-                    aiMsg.textContent = message.text;
-                    if (message.model) {
-                        const badge = document.createElement('span');
-                        badge.className = 'model-badge';
-                        badge.textContent = message.model;
-                        aiMsg.appendChild(badge);
-                    }
-                    chatContainer.appendChild(aiMsg);
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                    removeThinking();
+                    addMessage(message.text, 'ai', message.model, message.suggestions);
                     break;
                     
                 case 'error':
-                    addMessage(message.text, 'error');
+                    removeThinking();
+                    addMessage('❌ ' + message.text, 'error');
                     break;
                     
                 case 'projectAnalysis':
                     const analysis = message.data;
-                    const analysisText = \`📊 Project Analysis:\\n
-                    Framework: \${analysis.framework}\\n
-                    Language: \${analysis.language}\\n
-                    Package Manager: \${analysis.packageManager}\\n
-                    Runtime: \${analysis.runtime}\\n
-                    Docker: \${analysis.hasDocker ? '✅' : '❌'}\\n
-                    Kubernetes: \${analysis.hasKubernetes ? '✅' : '❌'}\\n
-                    CI/CD: \${analysis.hasCI ? '✅' : '❌'}\`;
+                    const analysisText = '📊 <strong>Project Analysis Complete</strong><br><br>' +
+                    '<strong>Framework:</strong> ' + analysis.framework + '<br>' +
+                    '<strong>Language:</strong> ' + analysis.language + '<br>' +
+                    '<strong>Package Manager:</strong> ' + analysis.packageManager + '<br>' +
+                    '<strong>Runtime:</strong> ' + analysis.runtime + '<br>' +
+                    '<strong>Docker:</strong> ' + (analysis.hasDocker ? '✅ Configured' : '❌ Not configured') + '<br>' +
+                    '<strong>Kubernetes:</strong> ' + (analysis.hasKubernetes ? '✅ Configured' : '❌ Not configured') + '<br>' +
+                    '<strong>CI/CD:</strong> ' + (analysis.hasCI ? '✅ Configured' : '❌ Not configured');
                     addMessage(analysisText, 'ai');
                     break;
             }
         });
+        
+        // Focus input on load
+        messageInput.focus();
     </script>
 </body>
 </html>`;

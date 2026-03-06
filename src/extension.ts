@@ -134,20 +134,75 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             );
         }
 
-        // Show welcome
-        vscode.window.showInformationMessage(
-            '🧞 GenieOps activated! Type "GenieOps: Run Command" to get started.',
-            'Open Chat', 'Get Started'
-        ).then(selection => {
-            if (selection === 'Get Started') {
-                vscode.commands.executeCommand('genieops.runCommand');
-            } else if (selection === 'Open Chat') {
-                vscode.commands.executeCommand('genieops.openChat');
-            }
-        });
+        // Check for API key and show welcome
+        await checkAndPromptForApiKey(context);
 
     } catch (error) {
         vscode.window.showErrorMessage(`GenieOps activation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+}
+
+async function checkAndPromptForApiKey(context: vscode.ExtensionContext): Promise<void> {
+    const config = vscode.workspace.getConfiguration('genieops');
+    const geminiApiKey = config.get<string>('googleApiKey');
+    const hasShownWelcome = context.globalState.get<boolean>('genieops.hasShownWelcome');
+
+    if (!geminiApiKey || geminiApiKey.trim() === '') {
+        // No API key configured - show setup wizard
+        const choice = await vscode.window.showInformationMessage(
+            '🧞 Welcome to GenieOps! Configure your Gemini API key to get started.',
+            'Configure Now',
+            'Later'
+        );
+
+        if (choice === 'Configure Now') {
+            const apiKey = await vscode.window.showInputBox({
+                prompt: 'Enter your Gemini API Key (get it from https://makersuite.google.com/app/apikey)',
+                placeHolder: 'AIzaSy...',
+                password: true,
+                ignoreFocusOut: true,
+                validateInput: (value) => {
+                    if (!value || value.trim() === '') {
+                        return 'API key cannot be empty';
+                    }
+                    if (!value.startsWith('AIza')) {
+                        return 'Invalid Gemini API key format (should start with AIza)';
+                    }
+                    return null;
+                }
+            });
+
+            if (apiKey) {
+                await config.update('googleApiKey', apiKey, vscode.ConfigurationTarget.Global);
+                vscode.window.showInformationMessage(
+                    '✅ Gemini API key configured! GenieOps is ready.',
+                    'Open Chat',
+                    'Run Command'
+                ).then(action => {
+                    if (action === 'Open Chat') {
+                        vscode.commands.executeCommand('genieops.openChat');
+                    } else if (action === 'Run Command') {
+                        vscode.commands.executeCommand('genieops.runCommand');
+                    }
+                });
+                await context.globalState.update('genieops.hasShownWelcome', true);
+            }
+        }
+    } else if (!hasShownWelcome) {
+        // API key exists but first time - show quick welcome
+        const choice = await vscode.window.showInformationMessage(
+            '🧞 GenieOps is ready! Click the genie icon in the Activity Bar or use commands.',
+            'Open Chat',
+            'Get Started'
+        );
+
+        if (choice === 'Get Started') {
+            vscode.commands.executeCommand('genieops.runCommand');
+        } else if (choice === 'Open Chat') {
+            vscode.commands.executeCommand('genieops.openChat');
+        }
+        
+        await context.globalState.update('genieops.hasShownWelcome', true);
     }
 }
 

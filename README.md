@@ -1,215 +1,230 @@
-# DevOps Omnibus 🚀
+# GenieOps 🧞
 
 <div align="center">
 
-**The World's Most Powerful Developer Automation Platform**
+**AI-Powered DevOps Automation Platform**
 
 [![VS Code](https://img.shields.io/badge/VS%20Code-1.85+-blue.svg)](https://code.visualstudio.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![MCP](https://img.shields.io/badge/MCP-Compatible-purple.svg)](https://modelcontextprotocol.io/)
+[![Gemini AI](https://img.shields.io/badge/Powered%20by-Gemini%20AI-8B5CF6.svg)](https://ai.google.dev/)
 
-*Your AI-powered command center for DevOps, Cloud, and Infrastructure automation*
+*Talk to your infrastructure like you talk to a friend. Deploy, monitor, and manage everything with natural language.*
 
 </div>
 
 ---
 
-## ✨ Features
+## 🚀 Quick Start
 
-### 🤖 AI-Powered Natural Language Interface
-Execute complex DevOps operations using simple natural language commands:
-- "Deploy the main branch to production on AWS"
-- "Show me all running containers and their resource usage"
-- "Scale the web service to 5 replicas in Kubernetes"
-- "Create a new feature branch and set up CI/CD pipeline"
+1. **Install GenieOps** from the VS Code Marketplace
+2. **Click the 🧞 icon** in the Activity Bar (left sidebar)
+3. **Configure your Gemini API Key**:
+   - Get your free key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Paste it when prompted (or in Settings → GenieOps → Google API Key)
+4. **Start chatting!** Press `Cmd+Shift+O` (Mac) or `Ctrl+Shift+O` (Windows/Linux)
 
-### ☁️ Multi-Cloud Provider Support
+## ✨ What Can GenieOps Do?
 
-| Provider | Services |
-|----------|----------|
-| **AWS** | Lambda, S3, EC2, ECS, ECR, CloudWatch, STS |
-| **Google Cloud** | Cloud Functions, Cloud Run, GKE, GCS, Compute Engine, Pub/Sub |
-| **Azure** | Functions, App Service, AKS, Storage, ACR, VMs |
+### 💬 Natural Language Commands
+Just type what you want in plain English:
+
+```
+"Deploy my app to AWS"
+"Show me all running containers"
+"Create a CI/CD pipeline for this Next.js project"
+"Scale my Kubernetes deployment to 5 replicas"
+"What's using the most CPU in production?"
+```
+
+### ☁️ Multi-Cloud Support
+
+| Provider | What You Can Do |
+|----------|-----------------|
+| **AWS** | Deploy Lambda functions, manage S3, EC2, ECS, CloudWatch monitoring |
+| **Google Cloud** | Cloud Run, GKE clusters, Cloud Functions, GCS storage |
+| **Azure** | App Service, AKS, Functions, Blob Storage, Container Registry |
 
 ### 🐳 Container & Orchestration
-- **Docker**: Full container lifecycle management, image operations, networks, volumes
-- **Kubernetes**: Pods, Deployments, Services, ConfigMaps, Secrets, Helm charts
+- **Docker**: Build, run, stop, logs, inspect containers and images
+- **Kubernetes**: Deploy, scale, update pods, services, and deployments
+- **Helm**: Install and manage charts
 
-### 🔄 CI/CD & Version Control
-- **GitHub**: Repositories, Issues, PRs, Actions workflows, Releases
-- **GitLab**: Repositories, Pipelines, Merge Requests
-- **Jenkins**: Jobs, Builds, Pipelines
+### 🔄 CI/CD & Git
+- **GitHub**: Repos, PRs, Issues, Actions workflows
+- **GitLab**: Pipelines, Merge Requests
+- **Jenkins**: Jobs and builds
 
-### 💬 Collaboration Integrations
-- **Slack**: Messages, Channels, Block Kit notifications, Deployment alerts
-- **Jira**: Issues, Sprints, Boards, JQL queries
+### 💬 Team Collaboration
+- **Slack**: Send deployment notifications and alerts
+- **Jira**: Create issues, update tickets, sprint management
 
-### 🔧 Workflow Automation Engine
-Pre-built workflow templates:
-- CI/CD Pipeline
-- Kubernetes Blue-Green Deployment
-- Canary Release with Metrics Evaluation
-- Database Migration with Rollback
-- Infrastructure Provisioning (Terraform)
-- Disaster Recovery Failover
+## 🎨 Beautiful Interface
 
----
+GenieOps features a modern chat interface inspired by GitHub Copilot:
+
+- **Multiple AI Models**: Choose between Gemini Pro, Gemini Flash, Claude, GPT-4, and Perplexity
+- **Agent Modes**: Agent, Assistant, Code, or DevOps specialized modes
+- **Smart Suggestions**: Context-aware command suggestions
+- **Real-time Typing Indicators**: See when GenieOps is thinking
+- **Visual Message Groups**: Clean, organized conversation view
+
+## 🔧 Key Features
+
+- **🎯 Project Auto-Detection**: Automatically detects your stack (Next.js, React, Node.js, Python, etc.)
+- **🔐 Secure Credential Storage**: All API keys safely stored in VS Code's secure storage
+- **📊 Real-time Monitoring**: Live status updates for deployments and infrastructure
+- **🔄 Workflow Automation**: Pre-built templates for common DevOps tasks
+- **📝 Command History**: Track and replay previous operations
+- **🌐 Multi-Cloud**: Switch between AWS, GCP, and Azure seamlessly
+
+## ⚙️ Configuration
+
+### Required: Gemini API Key
+
+1. Open VS Code Settings (`Cmd+,` on Mac, `Ctrl+,` on Windows/Linux)
+2. Search for "GenieOps"
+3. Enter your Gemini API Key (get one free at [Google AI Studio](https://makersuite.google.com/app/apikey))
+
+### Optional: Other AI Models
+
+Configure additional models for specialized tasks:
+- **Claude API Key**: For complex reasoning tasks
+- **OpenAI API Key**: For GPT-4 support
+- **Anthropic API Key**: For Claude 3.5
+
+### Optional: Cloud Providers
+
+Connect your cloud accounts:
+1. Click the 🧞 icon in the Activity Bar
+2. Go to "Connections" view
+3. Click "+" to add AWS, GCP, or Azure credentials
+
+## 🎮 Usage Examples
+
+### Example 1: Deploy a Web App
+```
+Open Chat (Cmd+Shift+O) and type:
+"Deploy my Next.js app to Vercel"
+```
+
+### Example 2: Docker Management
+```
+"Show me all running containers"
+"Stop the nginx container"
+"Build a Docker image from the current directory"
+```
+
+### Example 3: Kubernetes Operations
+```
+"Scale my web deployment to 5 replicas"
+"Show me pods in the production namespace"
+"Update the config map with new environment variables"
+```
+
+### Example 4: CI/CD Pipeline
+```
+"Generate a GitHub Actions workflow for this project"
+"Create a Dockerfile optimized for production"
+```
+
+## ⌨️ Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Cmd+Shift+O` (Mac) or `Ctrl+Shift+O` (Win/Linux) | Open Chat Panel |
+| `Cmd+Shift+G` (Mac) or `Ctrl+Shift+G` (Win/Linux) | Run Quick Command |
 
 ## 🏗️ Architecture
 
-```
-devops-omnibus/
-├── src/
-│   ├── extension.ts          # VS Code extension entry point
-│   ├── ai/                   # AI orchestration layer
-│   │   ├── orchestrator.ts   # Multi-provider AI (Claude, GPT-4, Gemini, Mistral)
-│   │   └── toolExecutor.ts   # MCP tool execution bridge
-│   ├── integrations/         # Service integrations
-│   │   ├── aws.ts            # AWS SDK v3 integration
-│   │   ├── gcp.ts            # Google Cloud integration
-│   │   ├── azure.ts          # Azure Management integration
-│   │   ├── docker.ts         # Dockerode container client
-│   │   ├── kubernetes.ts     # kubectl + Helm wrapper
-│   │   ├── github.ts         # GitHub API integration
-│   │   ├── slack.ts          # Slack Block Kit client
-│   │   └── jira.ts           # Jira REST API client
-│   ├── nlp/                  # Natural language processing
-│   │   ├── intentParser.ts   # Intent classification
-│   │   ├── entityExtractor.ts # Named entity extraction
-│   │   └── commandMapper.ts  # NL to command mapping
-│   ├── workflow/             # Workflow automation
-│   │   ├── engine.ts         # Workflow execution engine
-│   │   └── templates.ts      # Pre-built workflow templates
-│   ├── services/             # Core services
-│   │   ├── authService.ts    # Authentication management
-│   │   ├── configService.ts  # Configuration management
-│   │   ├── secretsService.ts # Secure credential storage
-│   │   └── loggingService.ts # Structured logging
-│   ├── utils/                # Utility modules
-│   │   ├── cache.ts          # Advanced caching (LRU/LFU/TTL)
-│   │   ├── metrics.ts        # Observability metrics
-│   │   └── resilience.ts     # Circuit breaker, retry, bulkhead
-│   └── ui/                   # UI components
-│       ├── commandPalette.ts
-│       ├── statusBar.ts
-│       └── treeViews/
-└── mcp-server/               # MCP tool server
-    └── src/
-        ├── server.ts         # MCP server entry
-        └── tools/            # 35+ DevOps tools
-```
+GenieOps is built with:
+- **TypeScript** for type safety
+- **VS Code Extension API** for native integration
+- **Gemini AI** as the primary intelligence layer
+- **MCP (Model Context Protocol)** for tool orchestration
+- **Secure credential storage** in VS Code's SecretStorage
 
----
+## 📦 Development
 
-## 🚀 Quick Start
-
-### Prerequisites
-- VS Code 1.85+
-- Node.js 18+
-- Docker (for container features)
-- kubectl (for Kubernetes features)
-
-### Installation
+Want to contribute or customize GenieOps?
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/devops-omnibus.git
-cd devops-omnibus
+git clone https://github.com/Kartikvyas1604/GenieOps.git
+cd GenieOps
 
 # Install dependencies
 npm install
 
-# Build the extension
-npm run build
+# Compile TypeScript
+npm run compile
 
-# Run tests
-npm test
+# Watch mode for development
+npm run watch
 ```
 
-### Configuration
+Then press `F5` in VS Code to launch the Extension Development Host.
 
-1. Open VS Code Settings (`Cmd+,` / `Ctrl+,`)
-2. Search for "DevOps Omnibus"
-3. Configure your providers:
+## 🤝 Contributing
 
-```json
-{
-  "devopsOmnibus.aws.region": "us-west-2",
-  "devopsOmnibus.aws.profile": "default",
-  "devopsOmnibus.gcp.projectId": "my-project",
-  "devopsOmnibus.azure.subscriptionId": "xxx-xxx-xxx",
-  "devopsOmnibus.ai.provider": "anthropic",
-  "devopsOmnibus.ai.model": "claude-sonnet-4-20250514"
-}
-```
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to your fork
+5. Open a Pull Request
+
+## 📝 License
+
+MIT License - see [LICENSE](LICENSE) file for details
+
+## 🐛 Troubleshooting
+
+### "API key not configured"
+Go to Settings → GenieOps → Google API Key and enter your Gemini API key
+
+### "Cannot connect to cloud provider"
+Check your credentials in the Connections panel. Click the service to re-authenticate.
+
+### Chat panel is blank
+Try reloading VS Code (`Cmd+R` or `Ctrl+R`)
+
+### Extension not appearing
+Make sure you've clicked the 🧞 genie icon in the Activity Bar (left sidebar)
+
+## ❓ FAQ
+
+**Q: Is GenieOps free?**  
+A: Yes! GenieOps is open source. You only pay for your cloud/API usage (Gemini has a generous free tier).
+
+**Q: What's the difference between Agent and Assistant modes?**  
+A: Agent mode can execute actions automatically, while Assistant mode provides guidance without making changes.
+
+**Q: Can I use this in production?**  
+A: Yes, but always review commands before execution and test in staging first.
+
+**Q: Which AI model should I use?**  
+A: **Gemini Pro** is the best balance of speed and capability. Use **Gemini Flash** for quick queries or **Claude/GPT-4** for complex reasoning.
+
+## 🙏 Acknowledgments
+
+Built with:
+- [Gemini AI](https://ai.google.dev/) - Primary AI engine
+- [VS Code Extension API](https://code.visualstudio.com/api)
+- [Model Context Protocol](https://modelcontextprotocol.io/)
 
 ---
 
-## 📖 Usage Examples
+<div align="center">
 
-### Natural Language Commands
+**Made with 💜 by developers, for developers**
 
-```
-# Container Operations
-"List all running Docker containers"
-"Build and push the web-app image to ECR"
-"Show container logs for nginx"
+[Report Bug](https://github.com/Kartikvyas1604/GenieOps/issues) · [Request Feature](https://github.com/Kartikvyas1604/GenieOps/issues) · [Documentation](https://github.com/Kartikvyas1604/GenieOps/wiki)
 
-# Kubernetes Operations
-"Deploy the staging manifests to the dev cluster"
-"Scale the api-service deployment to 3 replicas"
-"Get all pods in the production namespace"
+⭐ Star us on GitHub if GenieOps helps you!
 
-# Cloud Operations
-"Invoke the process-orders Lambda function"
-"List all S3 buckets with versioning enabled"
-"Create a new Cloud Run service from the latest image"
+</div>
 
-# CI/CD Operations
-"Trigger the deploy workflow on main branch"
-"Show the status of all GitHub Actions running"
-"Create a release for version 2.1.0"
-
-# Collaboration
-"Send deployment notification to #devops Slack channel"
-"Create a bug issue in Jira for the login service"
-"Add a comment to PR #123"
-```
-
-### Workflow Execution
-
-```typescript
-import { createCICDWorkflow, WorkflowEngine } from './workflow';
-
-// Use pre-built template
-const workflow = createCICDWorkflow({
-  repository: 'my-app',
-  branch: 'main',
-  environment: 'production'
-});
-
-// Execute workflow
-const engine = new WorkflowEngine();
-await engine.execute(workflow);
-```
-
-### Custom Workflow Builder
-
-```typescript
-import { WorkflowBuilder } from './workflow';
-
-const workflow = new WorkflowBuilder('custom-deploy')
-  .addTask('checkout', { action: 'git.clone', repo: 'my-app' })
-  .addTask('test', { action: 'shell.exec', command: 'npm test' })
-  .addParallel('build', [
-    { action: 'docker.build', dockerfile: './Dockerfile' },
-    { action: 'shell.exec', command: 'npm run lint' }
-  ])
-  .addApproval('prod-approval', { approvers: ['team-lead'] })
-  .addTask('deploy', { action: 'kubernetes.apply', manifests: './k8s/' })
-  .build();
-```
 
 ---
 
