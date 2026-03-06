@@ -160,12 +160,64 @@ export class ChatPanel {
             flex-direction: column;
         }
         .header {
-            padding: 16px;
-            background: var(--vscode-titleBar-activeBackground);
+            padding: 12px 16px;
+            background: var(--vscode-sideBar-background);
             border-bottom: 1px solid var(--vscode-panel-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         .header h2 {
-            font-size: 18px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .controls {
+            padding: 12px 16px;
+            background: var(--vscode-sideBar-background);
+            border-bottom: 1px solid var(--vscode-panel-border);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .control-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .control-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            font-weight: 600;
+        }
+        select {
+            background: var(--vscode-dropdown-background);
+            color: var(--vscode-dropdown-foreground);
+            border: 1px solid var(--vscode-dropdown-border);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        select:focus {
+            outline: 1px solid var(--vscode-focusBorder);
+        }
+        .mode-badge {
+            padding: 4px 10px;
+            background: var(--vscode-badge-background);
+            color: var(--vscode-badge-foreground);
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: 600;
         }
         .chat-container {
@@ -174,30 +226,100 @@ export class ChatPanel {
             padding: 16px;
             display: flex;
             flex-direction: column;
+            gap: 16px;
+        }
+        .message-group {
+            display: flex;
             gap: 12px;
+            align-items: flex-start;
         }
-        .message {
-            padding: 12px 16px;
-            border-radius: 8px;
-            max-width: 85%;
-            word-wrap: break-word;
+        .message-group.user {
+            flex-direction: row-reverse;
         }
-        .message.user {
-            align-self: flex-end;
+        .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
             background: var(--vscode-button-background);
             color: var(--vscode-button-foreground);
         }
+        .avatar.ai {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .message-content {
+            flex: 1;
+            max-width: 80%;
+        }
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .sender-name {
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+        .timestamp {
+            font-size: 10px;
+            opacity: 0.5;
+        }
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            word-wrap: break-word;
+            line-height: 1.5;
+            font-size: 13px;
+        }
+        .message.user {
+            background: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+            border-bottom-right-radius: 4px;
+        }
         .message.ai {
-            align-self: flex-start;
             background: var(--vscode-editor-inactiveSelectionBackground);
+            border-bottom-left-radius: 4px;
         }
         .message.thinking {
-            align-self: flex-start;
             background: var(--vscode-inputValidation-infoBackground);
             font-style: italic;
-            opacity: 0.8;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .message.error {
+            background: var(--vscode-inputValidation-errorBackground);
+            color: var(--vscode-inputValidation-errorForeground);
+            border-left: 3px solid var(--vscode-errorForeground);
+        }
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+        }
+        .typing-indicator span {
+            width: 6px;
+            height: 6px;
+            background: currentColor;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
             align-self: center;
             background: var(--vscode-inputValidation-errorBackground);
             color: var(--vscode-inputValidation-errorForeground);
