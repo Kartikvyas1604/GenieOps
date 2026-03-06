@@ -126,6 +126,33 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             })
         );
 
+        // General Connect Service command - shows a picker to select service
+        context.subscriptions.push(
+            vscode.commands.registerCommand('genieops.connectService', async () => {
+                const serviceOptions = [
+                    { label: '$(cloud) AWS', description: 'Amazon Web Services', value: 'aws' },
+                    { label: '$(cloud) GCP', description: 'Google Cloud Platform', value: 'gcp' },
+                    { label: '$(cloud) Azure', description: 'Microsoft Azure', value: 'azure' },
+                    { label: '$(zap) Vercel', description: 'Frontend deployment platform', value: 'vercel' },
+                    { label: '$(package) Docker', description: 'Container platform', value: 'docker' },
+                    { label: '$(symbol-namespace) Kubernetes', description: 'Container orchestration', value: 'kubernetes' },
+                    { label: '$(github) GitHub', description: 'Version control & CI/CD', value: 'github' },
+                    { label: '$(comment-discussion) Slack', description: 'Team communication', value: 'slack' },
+                    { label: '$(tasklist) Jira', description: 'Project management', value: 'jira' }
+                ];
+
+                const selected = await vscode.window.showQuickPick(serviceOptions, {
+                    placeHolder: 'Select a service to connect',
+                    ignoreFocusOut: true
+                });
+
+                if (selected) {
+                    // Call the specific connect command
+                    vscode.commands.executeCommand(`genieops.connectService.${selected.value}`);
+                }
+            })
+        );
+
         // Connect Service commands
         const services = [
             { cmd: 'genieops.connectService.aws', type: ServiceType.AWS, name: 'AWS' },
@@ -133,6 +160,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             { cmd: 'genieops.connectService.azure', type: ServiceType.AZURE, name: 'Azure' },
             { cmd: 'genieops.connectService.vercel', type: ServiceType.VERCEL, name: 'Vercel' },
             { cmd: 'genieops.connectService.docker', type: ServiceType.DOCKER, name: 'Docker' },
+            { cmd: 'genieops.connectService.kubernetes', type: ServiceType.KUBERNETES, name: 'Kubernetes' },
             { cmd: 'genieops.connectService.github', type: ServiceType.GITHUB, name: 'GitHub' },
             { cmd: 'genieops.connectService.slack', type: ServiceType.SLACK, name: 'Slack' },
             { cmd: 'genieops.connectService.jira', type: ServiceType.JIRA, name: 'Jira' }
