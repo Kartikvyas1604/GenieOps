@@ -5,11 +5,13 @@
 import * as vscode from 'vscode';
 import { CredentialManager } from '../auth/CredentialManager';
 import { ProjectScanner } from '../scanner/ProjectScanner';
+import { GeminiClient } from '../ai/geminiClient';
 
 export class ChatPanel {
     public static currentPanel: ChatPanel | undefined;
     private readonly _panel: vscode.WebviewPanel;
     private _disposables: vscode.Disposable[] = [];
+    private geminiClient: GeminiClient;
 
     private constructor(
         panel: vscode.WebviewPanel,
@@ -18,6 +20,7 @@ export class ChatPanel {
         private projectScanner: ProjectScanner
     ) {
         this._panel = panel;
+        this.geminiClient = new GeminiClient();
         this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
         this._panel.webview.html = this._getHtmlContent(extensionUri);
 
@@ -88,9 +91,24 @@ export class ChatPanel {
         });
 
         try {
-            // TODO: Send to AI orchestrator (Gemini)
-            // For now, send a mock response
-            const response = `I understand you want to: "${text}"\n\nThis feature is coming soon! GenieOps will use Gemini AI to:\n1. Analyze your request\n2. Scan your project\n3. Execute the necessary DevOps tasks\n4. Provide real-time updates`;
+            // Get workspace context
+            const workspaceContext = await this.getWorkspaceContext();
+
+            // Create enhanced prompt with context
+            const systemPrompt = `You are GenieOps, an expert AI DevOps assistant powered by Gemini Pro. You help developers with:
+- Cloud deployments (AWS, GCP, Azure)
+- Docker and Kubernetes
+- CI/CD pipelines
+- Infrastructure as code
+- DevOps automation
+
+Current workspace context:
+${workspaceContext}
+
+Provide practical, actionable responses. When suggesting commands or configurations, use code blocks. Be concise but thorough.`;
+
+            // Send to Gemini API
+            const response = await this.geminiClient.sendMessage(text, systemPrompt);
 
             this._panel.webview.postMessage({
                 type: 'aiResponse',
@@ -98,10 +116,55 @@ export class ChatPanel {
                 model: 'gemini-pro'
             });
         } catch (error) {
-            this._panel.webview.postMessage({
-                type: 'error',
-                text: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
-            });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+            // Check if it's an API key error
+            if (errorMessage.includes('API key')) {
+                this._panel.webview.postMessage({
+                    type: 'error',
+                    text: '❌ Gemini API key not configured or invalid. Click "Open Settings" button to configure your API key.'
+                });
+
+                // Prompt user to configure API key
+                const action = await vscode.window.showErrorMessage(
+                    'Gemini API key not configured',
+                    'Open Settings',
+                    'Get API Key'
+                );
+
+                if (action === 'Open Settings') {
+                    vscode.commands.executeCommand('workbench.action.openSettings', 'genieops.googleApiKey');
+                } else if (action === 'Get API Key') {
+                    vscode.env.openExternal(vscode.Uri.parse('https://makersuite.google.com/app/apikey'));
+                }
+            } else {
+                this._panel.webview.postMessage({
+                    type: 'error',
+                    text: `Error: ${errorMessage}`
+                });
+            }
+        }
+    }
+
+    private async getWorkspaceContext(): Promise<string> {
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+
+        if (!workspaceFolders || workspaceFolders.length === 0) {
+            return 'No workspace folder open.';
+        }
+
+        try {
+            const analysis = await this.projectScanner.analyze(workspaceFolders[0].uri.fsPath);
+
+            return `- Framework: ${analysis.framework || 'Unknown'}
+- Language: ${analysis.language || 'Unknown'}
+- Package Manager: ${analysis.packageManager || 'Unknown'}
+- Runtime: ${analysis.runtime || 'Unknown'}
+- Docker: ${analysis.hasDocker ? 'Yes' : 'No'}
+- Kubernetes: ${analysis.hasKubernetes ? 'Yes' : 'No'}
+- CI/CD: ${analysis.hasCI ? 'Yes' : 'No'}`;
+        } catch (error) {
+            return 'Unable to analyze workspace.';
         }
     }
 
