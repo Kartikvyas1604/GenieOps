@@ -159,7 +159,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
         // Check for API key and show welcome
         await checkAndPromptForApiKey(context);
-        
+
         // Show activation success
         console.log('✅ GenieOps fully initialized and ready!');
 
