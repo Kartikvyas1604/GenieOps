@@ -1,18 +1,21 @@
 {
-  "name": "genie-ops",
-  "displayName": "Genie-ops",
-  "description": "Genie-ops is the world's most powerful DevOps automation platform. Execute any cloud, CI/CD, or integration task via natural language with multi-AI orchestration.",
+  "name": "omniops",
+  "displayName": "OmniOps - The World's Most Powerful DevOps Extension",
+  "description": "Type ONE sentence → Extension does ALL DevOps work automatically. AWS, GCP, Azure, Docker, Kubernetes, CI/CD, Auth, Payments - Everything via natural language with multi-AI orchestration.",
   "version": "1.0.0",
   "publisher": "0xkartikvyas",
+  "icon": "resources/icon.png",
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.85.0",
+    "node": ">=20.0.0"
   },
   "categories": [
     "Other",
     "SCM Providers",
     "Machine Learning",
     "Azure",
-    "Programming Languages"
+    "Programming Languages",
+    "Deployment"
   ],
   "keywords": [
     "devops",
@@ -24,7 +27,14 @@
     "azure",
     "kubernetes",
     "docker",
-    "ci-cd"
+    "ci-cd",
+    "terraform",
+    "stripe",
+    "auth0",
+    "firebase",
+    "slack",
+    "jira",
+    "omniops"
   ],
   "activationEvents": [
     "onStartupFinished"
@@ -34,142 +44,607 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "genie-ops",
-          "title": "Genie-ops",
+          "id": "omniops",
+          "title": "OmniOps",
           "icon": "resources/icon.svg"
         }
       ]
     },
     "views": {
-      "genie-ops": [
+      "omniops": [
         {
           "type": "webview",
-          "id": "genie-ops.chatView",
-          "name": "Genie-ops Control Center"
+          "id": "omniops.chatView",
+          "name": "OmniOps Control Center"
+        },
+        {
+          "id": "omniops.connectionsView",
+          "name": "Connected Services"
+        },
+        {
+          "id": "omniops.resourcesView",
+          "name": "Cloud Resources"
+        },
+        {
+          "id": "omniops.pipelinesView",
+          "name": "Pipelines"
+        },
+        {
+          "id": "omniops.historyView",
+          "name": "Command History"
         }
       ]
     },
     "commands": [
       {
-        "command": "genie-ops.openChat",
-        "title": "Genie-ops: Open Control Center",
-        "category": "Genie-ops"
+        "command": "omniops.openChat",
+        "title": "Open Control Center",
+        "category": "OmniOps",
+        "icon": "$(comment-discussion)"
       },
       {
-        "command": "genie-ops.runTask",
-        "title": "Genie-ops: Run DevOps Task",
-        "category": "Genie-ops"
+        "command": "omniops.runCommand",
+        "title": "Run Natural Language Command",
+        "category": "OmniOps",
+        "icon": "$(play)"
       },
       {
-        "command": "genie-ops.connectService.github",
-        "title": "Genie-ops: Connect GitHub",
-        "category": "Genie-ops"
+        "command": "omniops.vibeCode",
+        "title": "Vibe Code - Build Full App from Description",
+        "category": "OmniOps",
+        "icon": "$(sparkle)"
       },
       {
-        "command": "genie-ops.connectService.docker",
-        "title": "Genie-ops: Connect Docker",
-        "category": "Genie-ops"
+        "command": "omniops.analyzeProject",
+        "title": "Analyze Project Context",
+        "category": "OmniOps",
+        "icon": "$(search)"
       },
       {
-        "command": "genie-ops.connectService.aws",
-        "title": "Genie-ops: Connect AWS",
-        "category": "Genie-ops"
+        "command": "omniops.showConnectionGraph",
+        "title": "Show Connection Graph",
+        "category": "OmniOps",
+        "icon": "$(graph)"
       },
       {
-        "command": "genie-ops.connectService.slack",
-        "title": "Genie-ops: Connect Slack",
-        "category": "Genie-ops"
+        "command": "omniops.rollbackLastAction",
+        "title": "Rollback Last Action",
+        "category": "OmniOps",
+        "icon": "$(discard)"
       },
       {
-        "command": "genie-ops.connectService.jira",
-        "title": "Genie-ops: Connect Jira",
-        "category": "Genie-ops"
+        "command": "omniops.cloneEnvironment",
+        "title": "Clone Environment (staging/prod)",
+        "category": "OmniOps",
+        "icon": "$(copy)"
       },
       {
-        "command": "genie-ops.connectService.gcp",
-        "title": "Genie-ops: Connect Google Cloud",
-        "category": "Genie-ops"
+        "command": "omniops.estimateCost",
+        "title": "Estimate Monthly Cloud Cost",
+        "category": "OmniOps",
+        "icon": "$(graph-line)"
       },
       {
-        "command": "genie-ops.connectService.azure",
-        "title": "Genie-ops: Connect Azure",
-        "category": "Genie-ops"
+        "command": "omniops.syncSecrets",
+        "title": "Sync Secrets to Vault",
+        "category": "OmniOps"
+,
+        "icon": "$(key)"
       },
       {
-        "command": "genie-ops.connectService.kubernetes",
-        "title": "Genie-ops: Connect Kubernetes",
-        "category": "Genie-ops"
+        "command": "omniops.connectService.aws",
+        "title": "Connect AWS",
+        "category": "OmniOps - Cloud",
+        "icon": "$(cloud)"
       },
       {
-        "command": "genie-ops.cloneEnvironment",
-        "title": "Genie-ops: Clone Environment",
-        "category": "Genie-ops"
+        "command": "omniops.connectService.gcp",
+        "title": "Connect Google Cloud",
+        "category": "OmniOps - Cloud",
+        "icon": "$(cloud)"
       },
       {
-        "command": "genie-ops.vibeCode",
-        "title": "Genie-ops: Vibe Code Application",
-        "category": "Genie-ops"
+        "command": "omniops.connectService.azure",
+        "title": "Connect Microsoft Azure",
+        "category": "OmniOps - Cloud",
+        "icon": "$(azure)"
       },
       {
-        "command": "genie-ops.rollbackLastAction",
-        "title": "Genie-ops: Rollback Last Action",
-        "category": "Genie-ops"
+        "command": "omniops.connectService.vercel",
+        "title": "Connect Vercel",
+        "category": "OmniOps - Cloud",
+        "icon": "$(rocket)"
       },
       {
-        "command": "genie-ops.showConnectionGraph",
-        "title": "Genie-ops: Show Connection Graph",
-        "category": "Genie-ops"
+        "command": "omniops.connectService.railway",
+        "title": "Connect Railway",
+        "category": "OmniOps - Cloud",
+        "icon": "$(rocket)"
       },
       {
-        "command": "genie-ops.syncSecrets",
-        "title": "Genie-ops: Sync Secrets to Vault",
-        "category": "Genie-ops"
+        "command": "omniops.connectService.netlify",
+        "title": "Connect Netlify",
+        "category": "OmniOps - Cloud",
+        "icon": "$(rocket)"
+      },
+      {
+        "command": "omniops.connectService.docker",
+        "title": "Connect Docker",
+        "category": "OmniOps - DevOps",
+        "icon": "$(package)"
+      },
+      {
+        "command": "omniops.connectService.kubernetes",
+        "title": "Connect Kubernetes",
+        "category": "OmniOps - DevOps",
+        "icon": "$(server-process)"
+      },
+      {
+        "command": "omniops.connectService.jenkins",
+        "title": "Connect Jenkins",
+        "category": "OmniOps - DevOps",
+        "icon": "$(circuit-board)"
+      },
+      {
+        "command": "omniops.connectService.github",
+        "title": "Connect GitHub",
+        "category": "OmniOps - DevOps",
+        "icon": "$(github)"
+      },
+      {
+        "command": "omniops.connectService.gitlab",
+        "title": "Connect GitLab",
+        "category": "OmniOps - DevOps",
+        "icon": "$(git-merge)"
+      },
+      {
+        "command": "omniops.connectService.bitbucket",
+        "title": "Connect Bitbucket",
+        "category": "OmniOps - DevOps",
+        "icon": "$(git-branch)"
+      },
+      {
+        "command": "omniops.connectService.terraform",
+        "title": "Connect Terraform",
+        "category": "OmniOps - IaC",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "omniops.connectService.pulumi",
+        "title": "Connect Pulumi",
+        "category": "OmniOps - IaC",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "omniops.connectService.jira",
+        "title": "Connect Jira",
+        "category": "OmniOps - Project Mgmt",
+        "icon": "$(issues)"
+      },
+      {
+        "command": "omniops.connectService.linear",
+        "title": "Connect Linear",
+        "category": "OmniOps - Project Mgmt",
+        "icon": "$(checklist)"
+      },
+      {
+        "command": "omniops.connectService.trello",
+        "title": "Connect Trello",
+        "category": "OmniOps - Project Mgmt",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "omniops.connectService.asana",
+        "title": "Connect Asana",
+        "category": "OmniOps - Project Mgmt",
+        "icon": "$(tasklist)"
+      },
+      {
+        "command": "omniops.connectService.notion",
+        "title": "Connect Notion",
+        "category": "OmniOps - Project Mgmt",
+        "icon": "$(notebook)"
+      },
+      {
+        "command": "omniops.connectService.slack",
+        "title": "Connect Slack",
+        "category": "OmniOps - Communication",
+        "icon": "$(comment)"
+      },
+      {
+        "command": "omniops.connectService.teams",
+        "title": "Connect Microsoft Teams",
+        "category": "OmniOps - Communication",
+        "icon": "$(organization)"
+      },
+      {
+        "command": "omniops.connectService.discord",
+        "title": "Connect Discord",
+        "category": "OmniOps - Communication",
+        "icon": "$(broadcast)"
+      },
+      {
+        "command": "omniops.connectService.pagerduty",
+        "title": "Connect PagerDuty",
+        "category": "OmniOps - Communication",
+        "icon": "$(bell)"
+      },
+      {
+        "command": "omniops.connectService.auth0",
+        "title": "Connect Auth0",
+        "category": "OmniOps - Authentication",
+        "icon": "$(shield)"
+      },
+      {
+        "command": "omniops.connectService.firebase",
+        "title": "Connect Firebase Auth",
+        "category": "OmniOps - Authentication",
+        "icon": "$(flame)"
+      },
+      {
+        "command": "omniops.connectService.supabase",
+        "title": "Connect Supabase",
+        "category": "OmniOps - Authentication",
+        "icon": "$(database)"
+      },
+      {
+        "command": "omniops.connectService.clerk",
+        "title": "Connect Clerk",
+        "category": "OmniOps - Authentication",
+        "icon": "$(account)"
+      },
+      {
+        "command": "omniops.connectService.cognito",
+        "title": "Connect AWS Cognito",
+        "category": "OmniOps - Authentication",
+        "icon": "$(shield)"
+      },
+      {
+        "command": "omniops.connectService.googleOAuth",
+        "title": "Setup Google OAuth",
+        "category": "OmniOps - OAuth",
+        "icon": "$(symbol-method)"
+      },
+      {
+        "command": "omniops.connectService.githubOAuth",
+        "title": "Setup GitHub OAuth",
+        "category": "OmniOps - OAuth",
+        "icon": "$(github)"
+      },
+      {
+        "command": "omniops.connectService.facebookOAuth",
+        "title": "Setup Facebook OAuth",
+        "category": "OmniOps - OAuth",
+        "icon": "$(link)"
+      },
+      {
+        "command": "omniops.connectService.twitterOAuth",
+        "title": "Setup Twitter/X OAuth",
+        "category": "OmniOps - OAuth",
+        "icon": "$(twitter)"
+      },
+      {
+        "command": "omniops.connectService.appleOAuth",
+        "title": "Setup Apple Sign In",
+        "category": "OmniOps - OAuth",
+        "icon": "$(device-mobile)"
+      },
+      {
+        "command": "omniops.connectService.stripe",
+        "title": "Connect Stripe",
+        "category": "OmniOps - Payments",
+        "icon": "$(credit-card)"
+      },
+      {
+        "command": "omniops.connectService.twilio",
+        "title": "Connect Twilio",
+        "category": "OmniOps - Communications API",
+        "icon": "$(device-mobile)"
+      },
+      {
+        "command": "omniops.connectService.sendgrid",
+        "title": "Connect SendGrid",
+        "category": "OmniOps - Communications API",
+        "icon": "$(mail)"
+      },
+      {
+        "command": "omniops.connectService.resend",
+        "title": "Connect Resend",
+        "category": "OmniOps - Communications API",
+        "icon": "$(mail)"
+      },
+      {
+        "command": "omniops.connectService.postmark",
+        "title": "Connect Postmark",
+        "category": "OmniOps - Communications API",
+        "icon": "$(mail)"
+      },
+      {
+        "command": "omniops.deploy.aws",
+        "title": "Deploy to AWS",
+        "category": "OmniOps - Deploy",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "omniops.deploy.gcp",
+        "title": "Deploy to Google Cloud",
+        "category": "OmniOps - Deploy",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "omniops.deploy.azure",
+        "title": "Deploy to Azure",
+        "category": "OmniOps - Deploy",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "omniops.deploy.vercel",
+        "title": "Deploy to Vercel",
+        "category": "OmniOps - Deploy",
+        "icon": "$(rocket)"
+      },
+      {
+        "command": "omniops.deploy.railway",
+        "title": "Deploy to Railway",
+        "category": "OmniOps - Deploy",
+        "icon": "$(rocket)"
+      },
+      {
+        "command": "omniops.generate.dockerfile",
+        "title": "Generate Dockerfile",
+        "category": "OmniOps - Generate",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "omniops.generate.cicd",
+        "title": "Generate CI/CD Pipeline",
+        "category": "OmniOps - Generate",
+        "icon": "$(github-action)"
+      },
+      {
+        "command": "omniops.generate.terraform",
+        "title": "Generate Terraform Config",
+        "category": "OmniOps - Generate",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "omniops.generate.k8s",
+        "title": "Generate Kubernetes Manifests",
+        "category": "OmniOps - Generate",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "omniops.generate.helm",
+        "title": "Generate Helm Charts",
+        "category": "OmniOps - Generate",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "omniops.refreshConnections",
+        "title": "Refresh Connections",
+        "category": "OmniOps",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "omniops.disconnectService",
+        "title": "Disconnect Service",
+        "category": "OmniOps",
+        "icon": "$(debug-disconnect)"
       }
     ],
     "configuration": {
-      "title": "Genie-ops",
+      "title": "OmniOps",
       "properties": {
-        "genieOps.telemetry.enabled": {
+        "omniops.telemetry.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable anonymous usage telemetry for Genie-ops. Disabled by default for privacy."
+          "description": "Enable anonymous usage telemetry (opt-in only, GDPR compliant)"
         },
-        "genieOps.models.claude.enabled": {
+        "omniops.autoAnalyzeProject": {
           "type": "boolean",
           "default": true,
-          "description": "Enable Claude 3.5 Sonnet via Anthropic SDK as the primary model."
+          "description": "Automatically analyze project context on workspace open"
         },
-        "genieOps.models.openai.enabled": {
+        "omniops.showProgressNotifications": {
           "type": "boolean",
           "default": true,
-          "description": "Enable OpenAI GPT-4o as a secondary model."
+          "description": "Show streaming progress for all operations"
         },
-        "genieOps.models.gemini.enabled": {
+        "omniops.models.claude.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable Gemini Pro for Google Cloud specific tasks."
+          "description": "Enable Claude 3.5 Sonnet (Anthropic) - Primary model for code generation"
         },
-        "genieOps.models.mistral.enabled": {
+        "omniops.models.claude.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Anthropic API key (stored securely in VS Code secret storage)"
+        },
+        "omniops.models.openai.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable Mistral for fast local-style completions."
+          "description": "Enable GPT-4o (OpenAI) - Secondary model for alternative implementations"
         },
-        "genieOps.models.perplexity.enabled": {
+        "omniops.models.openai.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "OpenAI API key"
+        },
+        "omniops.models.gemini.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable Perplexity API for trending tech radar lookups."
+          "description": "Enable Gemini Pro (Google) - For GCP tasks and multimodal analysis"
         },
-        "genieOps.autoContext.enabled": {
+        "omniops.models.gemini.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Google AI Studio API key"
+        },
+        "omniops.models.geminiFlash.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Automatically analyze project context and pre-load it for AI models."
+          "description": "Enable Gemini Flash - Fast completions and autocomplete"
         },
-        "genieOps.parallelExecution.enabled": {
+        "omniops.models.mistral.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable Mistral - Local/private completions"
+        },
+        "omniops.models.perplexity.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Run multiple AI models in parallel for complex tasks (model race mode)."
+          "description": "Enable Perplexity - Real-time web search for trending best practices"
+        },
+        "omniops.models.perplexity.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Perplexity API key"
+        },
+        "omniops.parallelExecution.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run multiple AI models in parallel (Model Race Mode)"
+        },
+        "omniops.parallelExecution.showComparison": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show side-by-side comparison when multiple models answer"
+        },
+        "omniops.costEstimation.showBeforeProvisioning": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show estimated monthly cost before provisioning cloud resources"
+        },
+        "omniops.rollback.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable undo/rollback for all operations"
+        },
+        "omniops.secrets.syncToVault": {
+          "type": "boolean",
+          "default": false,
+          "description": "Auto-sync secrets to external vault (Doppler/AWS Secrets Manager)"
+        },
+        "omniops.secrets.vaultProvider": {
+          "type": "string",
+          "enum": [
+            "none",
+            "doppler",
+            "aws-secrets-manager",
+            "hashicorp-vault"
+          ],
+          "default": "none",
+          "description": "External secrets vault provider"
+        },
+        "omniops.docker.preferredRegistry": {
+          "type": "string",
+          "enum": [
+            "dockerhub",
+            "ecr",
+            "gcr",
+            "ghcr"
+          ],
+          "default": "dockerhub",
+          "description": "Preferred Docker registry for image pushes"
+        },
+        "omniops.cicd.preferredProvider": {
+          "type": "string",
+          "enum": [
+            "github-actions",
+            "gitlab-ci",
+            "jenkins",
+            "bitbucket-pipelines"
+          ],
+          "default": "github-actions",
+          "description": "Preferred CI/CD provider"
+        },
+        "omniops.kubernetes.defaultClusterType": {
+          "type": "string",
+          "enum": [
+            "eks",
+            "gke",
+            "aks",
+            "minikube",
+            "k3s",
+            "kind"
+          ],
+          "default": "eks",
+          "description": "Default Kubernetes cluster type for new deployments"
+        },
+        "omniops.packageManager.autoDetect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-detect package manager (npm/yarn/pnpm/bun)"
+        },
+        "omniops.env.autoUpdate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically update .env file with new credentials"
+        },
+        "omniops.env.addToGitignore": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically add .env to .gitignore"
+        },
+        "omniops.notifications.slack.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Send deployment notifications to Slack"
+        },
+        "omniops.notifications.discord.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Send deployment notifications to Discord"
         }
       }
+    },
+    "keybindings": [
+      {
+        "command": "omniops.openChat",
+        "key": "ctrl+shift+o",
+        "mac": "cmd+shift+o",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "omniops.runCommand",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d"
+      },
+      {
+        "command": "omniops.vibeCode",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "omniops.openChat",
+          "when": "true"
+        },
+        {
+          "command": "omniops.runCommand",
+          "when": "true"
+        },
+        {
+          "command": "omniops.vibeCode",
+          "when": "true"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "omniops.refreshConnections",
+          "when": "view == omniops.connectionsView",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "omniops.disconnectService",
+          "when": "view == omniops.connectionsView && viewItem == connectedService",
+          "group": "inline"
+        }
+      ]
     }
   },
   "scripts": {
@@ -178,10 +653,29 @@
     "watch": "tsc -watch -p ./tsconfig.json",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
   "dependencies": {
-    "zod": "^3.22.4"
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "@anthropic-ai/sdk": "^0.20.0",
+    "openai": "^4.28.0",
+    "@google/generative-ai": "^0.2.1",
+    "@aws-sdk/client-s3": "^3.525.0",
+    "@aws-sdk/client-ec2": "^3.525.0",
+    "@aws-sdk/client-rds": "^3.525.0",
+    "@aws-sdk/client-lambda": "^3.525.0",
+    "@aws-sdk/client-ecs": "^3.525.0",
+    "@aws-sdk/client-eks": "^3.525.0",
+    "@aws-sdk/client-cloudformation": "^3.525.0",
+    "@google-cloud/run": "^1.0.0",
+    "@google-cloud/storage": "^7.7.0",
+    "@azure/identity": "^4.0.0",
+    "@azure/arm-appservice": "^14.0.0",
+    "zod": "^3.22.4",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "@types/node": "20.x",
@@ -189,7 +683,17 @@
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
     "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^2.22.0",
     "eslint": "^8.54.0",
     "typescript": "^5.3.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0xkartikvyas/omniops"
+  },
+  "bugs": {
+    "url": "https://github.com/0xkartikvyas/omniops/issues"
+  },
+  "homepage": "https://github.com/0xkartikvyas/omniops#readme",
+  "license": "MIT"
 }
